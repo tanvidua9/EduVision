@@ -1,0 +1,9 @@
+{% for lesson in lessons_queryset %}
+  {% if lesson.public_id %}
+    <a href="{% url 'lesson-detail' course_id=object.public_id lesson_id=lesson.public_id %}">
+      {{ lesson.title }}
+    </a>
+  {% else %}
+    <span>{{ lesson.title }} (Unavailable)</span>
+  {% endif %}
+{% endfor %}

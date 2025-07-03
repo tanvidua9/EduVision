@@ -1,0 +1,37 @@
+{% load django_htmx %}
+<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cloudinary-video-player/2.0.5/cld-video-player.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cloudinary-video-player/2.0.5/cld-video-player.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://unpkg.com/htmx.org@2.0.2" integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ" crossorigin="anonymous"></script>
+{% django_htmx_script %}
+
+
+
+<script defer>
+
+    function renderVideoElement(videoPlayerElement) {
+        const currentVideoId = videoPlayerElement.getAttribute('id')
+        const videoPlayerId = `${currentVideoId}` + '-cfe-' + Math.random().toString(36).substr(2, 9);
+        videoPlayerElement.setAttribute("id", videoPlayerId);
+        const cloudName = videoPlayerElement.dataset.cloudName;
+        const videoUrl = videoPlayerElement.dataset.videoUrl;
+        if (cloudName && videoUrl) {
+            const cld = cloudinary.videoPlayer(videoPlayerId, {
+                cloudName: cloudName
+            });
+            cld.source(videoUrl);
+        }
+    }
+
+    function renderAllVideos() {
+        const videoPlayerClassName = 'cfe-video';
+        const videoPlayerElements = document.getElementsByClassName(videoPlayerClassName);
+        console.log(videoPlayerElements);
+        for (let el of videoPlayerElements) {
+            console.log(el);
+            renderVideoElement(el);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', renderAllVideos)
+</script>
